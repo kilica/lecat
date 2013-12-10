@@ -155,16 +155,20 @@ class Lecat_DelegateFunctions implements Legacy_iCategoryDelegate
 	 * @param string 	$authType	ex) viewer, editor, manager
 	 * @param int 		$catId	get tree under this cat_id
 	 * @param string	$module module confinement
+     * @param bool  contain requested catId's object.
 	 *
 	 * @return	void
 	 */ 
-	public static function getTree(/*** Legacy_AbstractCategoryObject[] ***/ &$tree, /*** string ***/ $catDir, /*** string ***/ $authType, /*** int ***/ $catId=0, /*** string ***/ $module=null)
+	public static function getTree(/*** Legacy_AbstractCategoryObject[] ***/ &$tree, /*** string ***/ $catDir, /*** string ***/ $authType, /*** int ***/ $catId=0, /*** string ***/ $module=null, $containSelf=false)
 	{
 		$handler = Legacy_Utils::getModuleHandler('cat', $catDir);
 		if($handler){
 			$tree = $handler->getTree(intval($catId));
 			$tree = $handler->filterCategory($tree, $authType, Legacy_Utils::getUid(), false);
 		}
+        if($catId>0 && $containSelf==true){
+            array_unshift($tree, $handler->get($catId));
+        }
 	}
 
 	/**
@@ -243,7 +247,7 @@ class Lecat_DelegateFunctions implements Legacy_iCategoryDelegate
 			foreach(array_keys($cat->mChildren) as $key){
 				$children['catObj'][$key] = $cat->mChildren[$key];
 				if($authType){
-					if($cat->mChildren[$key]->checkPermitByUserId($authType, Legacy_Utils::getUid()=='true')){
+					if($cat->mChildren[$key]->checkPermitByUid($authType, Legacy_Utils::getUid()=='true')){
 						$children['permit'][$key] = 1;
 					}
 					else{

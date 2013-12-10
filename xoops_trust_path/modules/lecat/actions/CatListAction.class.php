@@ -85,6 +85,8 @@ class Lecat_CatListAction extends Lecat_AbstractListAction
 		$render->setAttribute('objects', $this->mObjects);
 		$render->setAttribute('dirname', $this->mAsset->mDirname);
 		//	$render->setAttribute('pageNavi', $this->mFilter->mNavi);
+        $breadcrumbs = $this->_getBreadcrumb($this->mObject);
+        $render->setAttribute('xoops_breadcrumbs', $breadcrumbs);
 	}
 }
 

@@ -139,10 +139,17 @@ class Lecat_CatObject extends Legacy_AbstractCategoryObject
 	*/
 	public function getThisPermit($groupId=0)
 	{
+		static $permitArray = array();
+		static $flag = array();
+		
+		if(isset($permitArray[$this->get('cat_id')][$groupId])){
+			$this->mTargetFlag = $flag[$this->get('cat_id')][$groupId];
+			return $permitArray[$this->get('cat_id')][$groupId];
+		}
+		
 		//if this category don't have permissions, check the upper category's permissions retroactively
 		if($permitArr = $this->_getPermit($groupId)){
 			$this->mTargetFlag = 'cur'; //current cat has permission
-			return $permitArr;
 		}
 		else{
 			//get the category path from the top category in descendant order
@@ -169,8 +176,10 @@ class Lecat_CatObject extends Legacy_AbstractCategoryObject
 			}
 		
 			$this->mTargetFlag = 'anc'; //ancestoral cat has permission
-			return $permitArr;
 		}
+		$permitArray[$this->get('cat_id')][$groupId] = $permitArr;
+		$flag[$this->get('cat_id')][$groupId] = $this->mTargetFlag;
+		return $permitArr;
 	}
 
 	/**
@@ -235,6 +244,7 @@ class Lecat_CatObject extends Legacy_AbstractCategoryObject
 	*/
 	public function checkPermitByUid($action, $uid=0, $module="")
 	{
+		static $groupObjects = array();
 		//check this category is for specific dirname ?
 		if(! $this->checkModule($module)){
 			$this->mProhibitedFlag = false;
@@ -244,11 +254,14 @@ class Lecat_CatObject extends Legacy_AbstractCategoryObject
 		$groupHandler = Lecat_Utils::getXoopsHandler('group');
 		//check group permission
 		if(intval($uid)>0){
-			$handler =Lecat_Utils::getXoopsHandler('user');
-			$groupIds = $handler->get($uid)->getGroups();
-			foreach($groupIds as $gid){
-				$groups[] = $groupHandler->get($gid);
+			if(! isset($groupObjects[$uid])){
+				$handler =Lecat_Utils::getXoopsHandler('user');
+				$groupIds = $handler->get($uid)->getGroups();
+				foreach($groupIds as $gid){
+					$groupObjects[$uid][] = $groupHandler->get($gid);
+				}
 			}
+			$groups = $groupObjects[$uid];
 		}
 		else{	//case:guest
 			$groups = $groupHandler->getObjects(new Criteria('group_type', 'Anonymous'));
@@ -282,7 +295,6 @@ class Lecat_CatObject extends Legacy_AbstractCategoryObject
 			return false;
 		}
 		$permissions =$permitArr[0]->getPermissionArr();
-		//var_dump($permissions);die();
 		return (@$permissions[$action]==1) ? true : false;
 	}
 

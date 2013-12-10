@@ -36,6 +36,14 @@ Then, they can use this module's delegate functions of Lecat_DelegateFunctions c
 
 Update History
 --------------
+2.05
+- Add Indexes to tables
+- Performance tuning
+- Add a $containSelf argument to Delegate API "getTree"
+
+2.04
+- Fix Bug: getChildren delegate function
+
 ver 2.03
 - Add category image working with legacy_image module.
 - Add category list block.

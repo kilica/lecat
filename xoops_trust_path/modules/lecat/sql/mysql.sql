@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `{prefix}_{dirname}_cat` (
   `weight` smallint(5) unsigned NOT NULL default '0',
   `options` text NOT NULL,
   PRIMARY KEY  (`cat_id`),
-  KEY `p_id` (`p_id`),
+  KEY `p_id` (`p_id`, `weight`),
   KEY `weight` (`weight`)
 ) ENGINE=MyISAM;
 INSERT INTO `{prefix}_{dirname}_cat` (`cat_id`, `title`, `p_id`, `modules`, `description`, `weight`, `options`) VALUES
@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `{prefix}_{dirname}_permit` (
   `groupid` smallint(5) unsigned NOT NULL default '0',
   `permissions` text NOT NULL,
   PRIMARY KEY  (`permit_id`),
+  KEY `group_cat` (`groupid`, `cat_id`),
   KEY `groupid` (`groupid`),
   KEY `cat_id` (`cat_id`)
 ) ENGINE=MyISAM;
