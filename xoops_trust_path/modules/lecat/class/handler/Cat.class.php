@@ -435,13 +435,13 @@ class Lecat_CatHandler extends Legacy_AbstractClientObjectHandler
 	 * 
 	 * @return	
 	**/
-	public function delete(&$obj)
+	public function delete(&$obj, $force=false)
 	{
 		$handler = Legacy_Utils::getModuleHandler('permit', $this->getDirname());
 		$handler->deleteAll(new Criteria('cat_id', $obj->get('cat_id')));
 		unset($handler);
 	
-		return parent::delete($obj);
+		return parent::delete($obj, $force);
 	}
 
 
