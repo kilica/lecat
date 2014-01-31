@@ -69,7 +69,7 @@ class Lecat_CatObject extends Legacy_AbstractCategoryObject
 			$criteria = new CriteriaCompo();
 			$criteria->add(new Criteria('p_id', $this->get('cat_id')));
 			$criteria->setSort('weight', 'ASC');
-			$children =& $handler->getObjects(new Criteria('p_id', $this->get('cat_id')));
+			$children =& $handler->getObjects($criteria);
 			//check module confinement
 			foreach(array_keys($children) as $key){
 				if($children[$key]->checkModule($module)){
