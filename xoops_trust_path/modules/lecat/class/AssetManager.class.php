@@ -54,7 +54,7 @@ class Lecat_AssetManager
      * 
      * @return  Lecat_AssetManager
     **/
-    public function &getInstance(/*** string ***/ $dirname)
+    public static function &getInstance(/*** string ***/ $dirname)
     {
         /**
          *  @var    Lecat_AssetManager[]
