@@ -67,7 +67,7 @@ class Lecat_CatListAction extends Lecat_AbstractListAction
 	public function getDefaultView()
 	{
 		$handler =& $this->_getHandler();
-		$this->mObjects =& $handler->getTree();
+		$this->mObjects = $handler->getTree();
 	
 		return LECAT_FRAME_VIEW_INDEX;
 	}
@@ -85,7 +85,7 @@ class Lecat_CatListAction extends Lecat_AbstractListAction
 		$render->setAttribute('objects', $this->mObjects);
 		$render->setAttribute('dirname', $this->mAsset->mDirname);
 		//	$render->setAttribute('pageNavi', $this->mFilter->mNavi);
-        $breadcrumbs = $this->_getBreadcrumb($this->mObject);
+        $breadcrumbs = $this->_getBreadcrumb($this->mObjects);
         $render->setAttribute('xoops_breadcrumbs', $breadcrumbs);
 	}
 }
