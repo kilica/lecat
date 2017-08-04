@@ -66,8 +66,10 @@ class Lecat_CatListAction extends Lecat_AbstractListAction
 	**/
 	public function getDefaultView()
 	{
+        $pId = $this->mRoot->mContext->mRequest->getRequest('p_id');
+
 		$handler =& $this->_getHandler();
-		$this->mObjects =& $handler->getTree();
+		$this->mObjects =& $handler->getTree(intval($pId));
 	
 		return LECAT_FRAME_VIEW_INDEX;
 	}
