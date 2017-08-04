@@ -141,10 +141,11 @@ class Lecat_CatObject extends Legacy_AbstractCategoryObject
 	{
 		static $permitArray = array();
 		static $flag = array();
+		$dirname = $this->getDirname();
 		
-		if(isset($permitArray[$this->get('cat_id')][$groupId])){
-			$this->mTargetFlag = $flag[$this->get('cat_id')][$groupId];
-			return $permitArray[$this->get('cat_id')][$groupId];
+		if(isset($permitArray[$dirname][$this->get('cat_id')][$groupId])){
+			$this->mTargetFlag = $flag[$dirname][$this->get('cat_id')][$groupId];
+			return $permitArray[$dirname][$this->get('cat_id')][$groupId];
 		}
 		
 		//if this category don't have permissions, check the upper category's permissions retroactively
@@ -177,8 +178,8 @@ class Lecat_CatObject extends Legacy_AbstractCategoryObject
 		
 			$this->mTargetFlag = 'anc'; //ancestoral cat has permission
 		}
-		$permitArray[$this->get('cat_id')][$groupId] = $permitArr;
-		$flag[$this->get('cat_id')][$groupId] = $this->mTargetFlag;
+		$permitArray[$dirname][$this->get('cat_id')][$groupId] = $permitArr;
+		$flag[$dirname][$this->get('cat_id')][$groupId] = $this->mTargetFlag;
 		return $permitArr;
 	}
 
